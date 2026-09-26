@@ -1,0 +1,935 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Nexa AI</title>
+
+
+    <!-- =========================
+         MAIN CSS
+    ========================== -->
+
+    <link
+        rel="stylesheet"
+        href="{{ url_for('static', path='css/style.css') }}"
+    >
+
+    <link
+        rel="stylesheet"
+        href="{{ url_for('static', path='css/attach-menu.css') }}"
+    >
+
+    <link
+        rel="stylesheet"
+        href="{{ url_for('static', path='css/vision.css') }}"
+    >
+
+
+    <!-- =========================
+         HIGHLIGHT.JS CSS
+    ========================== -->
+
+    <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/styles/github-dark.min.css"
+    >
+
+</head>
+
+
+<body>
+
+
+<!-- =========================
+     MAIN APP
+========================== -->
+
+<div class="app">
+
+
+    <!-- =========================
+         SIDEBAR
+    ========================== -->
+
+    <aside class="sidebar">
+
+
+        <!-- LOGO -->
+
+        <div class="logo">
+
+            <div class="logo-icon">
+                ✦
+            </div>
+
+            <span>
+                Nexa AI
+            </span>
+
+        </div>
+
+
+        <!-- NEW CHAT -->
+
+        <button
+            class="new-chat"
+            id="newChatButton"
+            type="button"
+        >
+
+            <span>
+                ＋
+            </span>
+
+            New Chat
+
+        </button>
+
+
+        <!-- =========================
+             CHAT HISTORY
+        ========================== -->
+
+        <div
+            class="chat-history"
+            id="chatHistory"
+        ></div>
+
+
+        <!-- =========================
+             SIDEBAR BOTTOM
+        ========================== -->
+
+        <div class="sidebar-bottom">
+
+
+            <!-- SETTINGS -->
+
+            <button
+                class="sidebar-item"
+                id="settingsButton"
+                type="button"
+            >
+
+                ⚙️ Settings
+
+            </button>
+
+
+            <!-- HELP -->
+
+            <button
+                class="sidebar-item"
+                id="helpButton"
+                type="button"
+            >
+
+                ❓ Help
+
+            </button>
+
+
+            <!-- LOGOUT -->
+
+            <button
+                class="sidebar-item logout-button"
+                id="logoutButton"
+                type="button"
+            >
+
+                <span>
+                    ↪
+                </span>
+
+                Logout
+
+            </button>
+
+
+        </div>
+
+
+    </aside>
+
+
+    <!-- =========================
+         MAIN CHAT
+    ========================== -->
+
+    <main class="chat-container">
+
+
+        <!-- =========================
+             HEADER
+        ========================== -->
+
+        <header class="chat-header">
+
+
+            <!-- LEFT SIDE -->
+
+            <div>
+
+                <h2>
+                    Nexa AI
+                </h2>
+
+                <p>
+                    AI Assistant
+                </p>
+
+            </div>
+
+
+            <!-- =========================
+                 USER PROFILE
+            ========================== -->
+
+            <div
+                class="user-profile"
+                id="userProfile"
+            >
+
+                <div
+                    class="user-avatar"
+                    id="userAvatar"
+                >
+                    U
+                </div>
+
+
+                <div class="user-details">
+
+                    <div
+                        class="user-name"
+                        id="userName"
+                    >
+                        User
+                    </div>
+
+                    <div
+                        class="user-email"
+                        id="userEmail"
+                    >
+                        user@email.com
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- MENU -->
+
+            <button
+                class="menu-button"
+                type="button"
+            >
+
+                ⋮
+
+            </button>
+
+
+        </header>
+
+
+        <!-- =========================
+             CHAT AREA
+        ========================== -->
+
+        <section
+            class="chat-area"
+            id="chatArea"
+        >
+
+
+            <!-- =========================
+                 WELCOME SCREEN
+            ========================== -->
+
+            <div
+                class="welcome"
+                id="welcomeScreen"
+            >
+
+
+                <div class="welcome-icon">
+
+                    ✦
+
+                </div>
+
+
+                <h1>
+
+                    How can I help you?
+
+                </h1>
+
+
+                <p>
+
+                    Ask me anything. I'm here to help
+                    you learn, create and solve problems.
+
+                </p>
+
+
+                <!-- SUGGESTIONS -->
+
+                <div class="suggestions">
+
+
+                    <button type="button">
+
+                        💡 Explain something
+
+                    </button>
+
+
+                    <button type="button">
+
+                        💻 Help me code
+
+                    </button>
+
+
+                    <button type="button">
+
+                        ✍️ Write something
+
+                    </button>
+
+
+                </div>
+
+
+            </div>
+
+
+        </section>
+
+
+        <!-- =========================
+             INPUT AREA
+        ========================== -->
+
+        <div class="input-wrapper">
+
+
+            <!-- =========================
+                 IMAGE PREVIEW
+            ========================== -->
+
+            <div
+                id="imagePreviewContainer"
+                class="image-preview-container"
+                hidden
+            >
+
+                <img
+                    id="imagePreview"
+                    class="image-preview"
+                    alt="Selected image preview"
+                >
+
+
+                <button
+                    type="button"
+                    id="removeImageButton"
+                    class="remove-image-button"
+                    aria-label="Remove image"
+                >
+
+                    ×
+
+                </button>
+
+            </div>
+
+
+            <!-- =========================
+                 INPUT BOX
+            ========================== -->
+
+            <div class="input-box">
+
+
+                <!-- ATTACH MENU -->
+
+                {% include "components/attach_menu.html" %}
+
+
+                <!-- MESSAGE INPUT -->
+
+                <input
+                    type="text"
+                    id="messageInput"
+                    placeholder="Message Nexa AI..."
+                    autocomplete="off"
+                >
+
+
+                <!-- SEND -->
+
+                <button
+                    class="send-button"
+                    id="sendButton"
+                    type="button"
+                >
+
+                    ➤
+
+                </button>
+
+
+            </div>
+
+
+            <!-- DISCLAIMER -->
+
+            <p class="disclaimer">
+
+                Nexa AI can make mistakes.
+                Check important information.
+
+            </p>
+
+
+        </div>
+
+
+    </main>
+
+
+</div>
+
+
+<!-- =========================
+     DELETE CHAT MODAL
+========================== -->
+
+<div
+    class="delete-modal"
+    id="deleteModal"
+>
+
+
+    <div class="delete-modal-box">
+
+
+        <!-- ICON -->
+
+        <div class="delete-modal-icon">
+
+            🗑️
+
+        </div>
+
+
+        <!-- TITLE -->
+
+        <h3>
+
+            Delete this chat?
+
+        </h3>
+
+
+        <!-- MESSAGE -->
+
+        <p>
+
+            Are you sure you want to delete
+
+            <strong id="deleteChatName"></strong>?
+
+        </p>
+
+
+        <!-- WARNING -->
+
+        <p class="delete-warning">
+
+            This conversation will be permanently deleted.
+
+        </p>
+
+
+        <!-- ACTION BUTTONS -->
+
+        <div class="delete-modal-actions">
+
+
+            <!-- CANCEL -->
+
+            <button
+                type="button"
+                class="cancel-delete-button"
+                id="cancelDeleteButton"
+            >
+
+                Cancel
+
+            </button>
+
+
+            <!-- DELETE -->
+
+            <button
+                type="button"
+                class="confirm-delete-button"
+                id="confirmDeleteButton"
+            >
+
+                Delete
+
+            </button>
+
+
+        </div>
+
+
+    </div>
+
+
+</div>
+
+
+<!-- =========================
+     SETTINGS MODAL
+========================== -->
+
+<div
+    class="settings-modal"
+    id="settingsModal"
+>
+
+
+    <div class="settings-box">
+
+
+        <!-- SETTINGS HEADER -->
+
+        <div class="settings-header">
+
+
+            <div>
+
+                <h3>
+                    Settings
+                </h3>
+
+                <p>
+                    Manage your Nexa AI preferences
+                </p>
+
+            </div>
+
+
+            <!-- CLOSE BUTTON -->
+
+            <button
+                type="button"
+                class="settings-close"
+                id="settingsCloseButton"
+            >
+
+                ×
+
+            </button>
+
+
+        </div>
+
+
+        <!-- SETTINGS CONTENT -->
+
+        <div class="settings-content">
+
+
+            <!-- =========================
+                 ACCOUNT
+            ========================== -->
+
+            <div class="settings-section">
+
+
+                <h4>
+                    Account
+                </h4>
+
+
+                <div class="settings-card">
+
+
+                    <div class="settings-icon">
+
+                        👤
+
+                    </div>
+
+
+                    <div>
+
+                        <strong id="settingsUserName">
+                            User
+                        </strong>
+
+                        <p id="settingsUserEmail">
+                            user@email.com
+                        </p>
+
+                    </div>
+
+
+                </div>
+
+
+            </div>
+
+
+            <!-- =========================
+                 APPEARANCE
+            ========================== -->
+
+            <div class="settings-section">
+
+
+                <h4>
+                    Appearance
+                </h4>
+
+
+                <div class="settings-option">
+
+
+                    <div>
+
+                        <strong>
+                            Dark Mode
+                        </strong>
+
+                        <p id="themeDescription">
+                            Use the dark interface
+                        </p>
+
+                    </div>
+
+
+                    <label class="theme-switch">
+
+                        <input
+                            type="checkbox"
+                            id="themeToggle"
+                            checked
+                        >
+
+                        <span class="theme-slider"></span>
+
+                    </label>
+
+
+                </div>
+
+
+            </div>
+
+
+            <!-- =========================
+                 SECURITY
+            ========================== -->
+
+            <div class="settings-section">
+
+
+                <h4>
+                    Security
+                </h4>
+
+
+                <!-- ACCOUNT SECURITY -->
+
+                <div class="settings-option">
+
+
+                    <div>
+
+                        <strong>
+                            Account Security
+                        </strong>
+
+                        <p>
+                            Your account is protected
+                        </p>
+
+                    </div>
+
+
+                    <span class="security-status">
+                        ✓
+                    </span>
+
+
+                </div>
+
+
+                <!-- CHANGE PASSWORD -->
+
+                <button
+                    type="button"
+                    class="change-password-button"
+                    id="changePasswordButton"
+                >
+
+                    <div>
+
+                        <strong>
+                            Change Password
+                        </strong>
+
+                        <p>
+                            Update your account password
+                        </p>
+
+                    </div>
+
+
+                    <span>
+                        →
+                    </span>
+
+                </button>
+
+
+            </div>
+
+
+        </div>
+
+
+    </div>
+
+
+</div>
+
+
+<!-- =========================
+     CHANGE PASSWORD MODAL
+========================== -->
+
+<div
+    class="password-modal"
+    id="passwordModal"
+>
+
+
+    <div class="password-box">
+
+
+        <!-- HEADER -->
+
+        <div class="password-header">
+
+
+            <div>
+
+                <h3>
+                    Change Password
+                </h3>
+
+                <p>
+                    Update your Nexa AI account password.
+                </p>
+
+            </div>
+
+
+            <!-- CLOSE -->
+
+            <button
+                type="button"
+                class="password-close"
+                id="passwordCloseButton"
+            >
+
+                ×
+
+            </button>
+
+
+        </div>
+
+
+        <!-- ERROR / SUCCESS MESSAGE -->
+
+        <div
+            class="password-message"
+            id="passwordMessage"
+        ></div>
+
+
+        <!-- FORM -->
+
+        <form id="changePasswordForm">
+
+
+            <!-- CURRENT PASSWORD -->
+
+            <div class="password-form-group">
+
+
+                <label for="currentPassword">
+                    Current Password
+                </label>
+
+
+                <input
+                    type="password"
+                    id="currentPassword"
+                    placeholder="Enter current password"
+                    autocomplete="current-password"
+                    required
+                >
+
+
+            </div>
+
+
+            <!-- NEW PASSWORD -->
+
+            <div class="password-form-group">
+
+
+                <label for="newPassword">
+                    New Password
+                </label>
+
+
+                <input
+                    type="password"
+                    id="newPassword"
+                    placeholder="Enter new password"
+                    autocomplete="new-password"
+                    required
+                >
+
+
+            </div>
+
+
+            <!-- CONFIRM PASSWORD -->
+
+            <div class="password-form-group">
+
+
+                <label for="confirmPassword">
+                    Confirm New Password
+                </label>
+
+
+                <input
+                    type="password"
+                    id="confirmPassword"
+                    placeholder="Confirm new password"
+                    autocomplete="new-password"
+                    required
+                >
+
+
+            </div>
+
+
+            <!-- BUTTONS -->
+
+            <div class="password-actions">
+
+
+                <!-- CANCEL -->
+
+                <button
+                    type="button"
+                    class="password-cancel-button"
+                    id="passwordCancelButton"
+                >
+
+                    Cancel
+
+                </button>
+
+
+                <!-- SUBMIT -->
+
+                <button
+                    type="submit"
+                    class="password-submit-button"
+                    id="passwordSubmitButton"
+                >
+
+                    Change Password
+
+                </button>
+
+
+            </div>
+
+
+        </form>
+
+
+    </div>
+
+
+</div>
+
+
+<!-- =========================
+     MARKED.JS
+========================== -->
+
+<script
+    src="https://cdn.jsdelivr.net/npm/marked@4.3.0/marked.min.js"
+></script>
+
+
+<!-- =========================
+     HIGHLIGHT.JS
+========================== -->
+
+<script
+    src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/highlight.min.js"
+></script>
+
+
+<!-- =========================
+     NEXA AI JAVASCRIPT
+========================== -->
+
+<script
+    src="{{ url_for('static', path='js/script.js') }}"
+></script>
+
+
+<script
+    src="{{ url_for('static', path='js/attach-menu.js') }}"
+></script>
+
+
+<script
+    src="{{ url_for('static', path='js/vision.js') }}"
+></script>
+
+
+</body>
+
+</html>
